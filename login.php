@@ -2,10 +2,7 @@
 session_start();
 $erreur = "";
 $pwhash = password_hash("1234", PASSWORD_DEFAULT);
-
 if (isset($_POST['btn'])) {
-
-    // Vérification des champs
     if (empty($_POST['username']) || empty($_POST['password'])) {
         $erreur = "Enter all your informations";
     }

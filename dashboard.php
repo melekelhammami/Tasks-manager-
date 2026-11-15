@@ -1,26 +1,97 @@
+
 <?php
-session_start();
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
+require_once "classes/Task.php";
+require_once "check_user.php";
 ?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard - My Tasks</title>
+    <link href="style.css"
+          rel="stylesheet">
 </head>
-<body>
 
-    <h1>
-        Welcome <?=$_SESSION['user'] ?> !
-    </h1>
+<body class="bg-light">
 
-    <p>Welcome to your tasks manager.</p>
+<div class="container mt-5">
 
-    <a href="logout.php">Déconnexion</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>My Tasks</h2>
+            <p class="text-muted">
+                Welcome <?= htmlspecialchars($_SESSION['user']) ?>!
+            </p>
+        </div>
+
+        <div>
+            <a href="add.php" class="btn btn-primary">+ Add Task</a>
+            <a href="logout.php" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5 class="card-title mb-3">Tasks List</h5>
+
+            <?php if (empty($_SESSION['tasks'])) { ?>
+
+                <div class="alert alert-info">
+                    No tasks yet. Add your first task!
+                </div>
+
+            <?php }else { ?>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Task name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <?php foreach ($_SESSION['tasks'] as $task) { ?>
+
+                                <tr>
+                                    <td><?= htmlspecialchars($task->getId()) ?></td>
+
+                                    <td><?= htmlspecialchars($task->getTitle()) ?></td>
+
+                                    <td><?= htmlspecialchars($task->getDescription()) ?></td>
+
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+
+                                        <a href="#" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            <?php }; ?>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            <?php } ?>
+
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>
